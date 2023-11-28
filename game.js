@@ -1,6 +1,172 @@
+let playerScore = 0;
+let computerScore = 0;
+let playerSelection = "";
+let computerSelection = "";
+let roundResults = -1;
+
+let startGameButton = document.querySelector("#start-game");
+let gameContainer = document.querySelector("#game");
+
+let gameStatus = document.createElement('p');
+gameStatus.textContent = '';
+
+//create rock, paper, scissors buttons
+let rockButton = document.createElement('button');
+rockButton.textContent = "Rock";
+
+let paperButton = document.createElement('button');
+paperButton.textContent = "Paper";
+
+let scissorsButton = document.createElement('button');
+scissorsButton.textContent = "Scissors";
+
+let playerCount = document.createElement('p');
+playerCount.textContent = 'Player: ' + playerScore;
+
+let computerCount = document.createElement('p');
+computerCount.textContent = 'Computer: ' + computerScore;
+
+startGameButton.addEventListener('click', (e) => {
+    let instructions = document.createElement('p');
+    instructions.textContent = "Make your choice ...";
+    gameContainer.appendChild(instructions);
+
+    let cpuChoice = document.createElement('p');
+
+    gameContainer.appendChild(rockButton);
+    gameContainer.appendChild(paperButton);
+    gameContainer.appendChild(scissorsButton);
+    gameContainer.appendChild(playerCount);
+    gameContainer.appendChild(computerCount);
+    gameContainer.appendChild(cpuChoice);
+    gameContainer.appendChild(gameStatus);
+
+    gameContainer.addEventListener('click', (e) => {
+        switch (e.target.textContent) {
+            case 'Rock':
+                playerSelection = 'rock';
+
+                computerSelection = getComputerChoice();
+                cpuChoice.textContent = "Computer goes... " + computerSelection.toUpperCase();
+
+                roundResults = playRound(playerSelection, computerSelection);
+
+                if (roundResults === 1) {
+                    playerScore++;
+                    playerCount.textContent = 'Player: ' + playerScore;
+                    gameStatus.textContent = "Round won, " + playerSelection.toLowerCase() + " beats " + computerSelection;
+                }
+
+                else if (roundResults === 2) {
+                    computerScore++;
+                    computerCount.textContent = 'Computer: ' + computerScore;
+                    gameStatus.textContent = "Round lost, " + computerSelection + " beats " + playerSelection.toLowerCase();
+                }
+
+                else if (roundResults === 0) {
+                    gameStatus.textContent = "Draw, let's keep going";
+                }
+
+                if (playerScore === 5) {
+                    gameStatus.textContent = "Player wins!";
+                    rockButton.setAttribute('disabled', '');
+                    paperButton.setAttribute('disabled', '');
+                    scissorsButton.setAttribute('disabled', '');
+                }
+                else if (computerScore === 5) {
+                    gameStatus.textContent = "Computer wins!";
+                    rockButton.setAttribute('disabled', '');
+                    paperButton.setAttribute('disabled', '');
+                    scissorsButton.setAttribute('disabled', '');
+                }
+
+                break;
+            case 'Paper':
+                playerSelection = 'paper';
+
+                computerSelection = getComputerChoice();
+                cpuChoice.textContent = "Computer goes... " + computerSelection.toUpperCase();
+
+                roundResults = playRound(playerSelection, computerSelection);
+
+                if (roundResults === 1) {
+                    playerScore++;
+                    playerCount.textContent = 'Player: ' + playerScore;
+                    gameStatus.textContent = "Round won, " + playerSelection.toLowerCase() + " beats " + computerSelection;
+                }
+
+                else if (roundResults === 2) {
+                    computerScore++;
+                    computerCount.textContent = 'Computer: ' + computerScore;
+                    gameStatus.textContent = "Round lost, " + computerSelection + " beats " + playerSelection.toLowerCase();
+                }
+
+                else if (roundResults === 0) {
+                    gameStatus.textContent = "Draw, let's keep going";
+                }
+
+                if (playerScore === 5) {
+                    gameStatus.textContent = "Player wins!";
+                    rockButton.setAttribute('disabled', '');
+                    paperButton.setAttribute('disabled', '');
+                    scissorsButton.setAttribute('disabled', '');
+                }
+                else if (computerScore === 5) {
+                    gameStatus.textContent = "Computer wins!";
+                    rockButton.setAttribute('disabled', '');
+                    paperButton.setAttribute('disabled', '');
+                    scissorsButton.setAttribute('disabled', '');
+                }
+
+                break;
+            case 'Scissors':
+                playerSelection = 'scissors';
+
+                computerSelection = getComputerChoice();
+                cpuChoice.textContent = "Computer goes... " + computerSelection.toUpperCase();
+
+                roundResults = playRound(playerSelection, computerSelection);
+
+                if (roundResults === 1) {
+                    playerScore++;
+                    playerCount.textContent = 'Player: ' + playerScore;
+                    gameStatus.textContent = "Round won, " + playerSelection.toLowerCase() + " beats " + computerSelection;
+                }
+
+                else if (roundResults === 2) {
+                    computerScore++;
+                    computerCount.textContent = 'Computer: ' + computerScore;
+                    gameStatus.textContent = "Round lost, " + computerSelection + " beats " + playerSelection.toLowerCase();
+                }
+
+                else if (roundResults === 0) {
+                    gameStatus.textContent = "Draw, let's keep going";
+                }
+
+                if (playerScore === 5) {
+                    gameStatus.textContent = "Player wins!";
+                    rockButton.setAttribute('disabled', '');
+                    paperButton.setAttribute('disabled', '');
+                    scissorsButton.setAttribute('disabled', '');
+                }
+                else if (computerScore === 5) {
+                    gameStatus.textContent = "Computer wins!";
+                    rockButton.setAttribute('disabled', '');
+                    paperButton.setAttribute('disabled', '');
+                    scissorsButton.setAttribute('disabled', '');
+                }
+
+                break;
+            default:
+                return 'ERROR';
+        }
+    });
+    e.target.remove();
+});
+
 function getComputerChoice() {
     let choices = ["rock", "paper", "scissors"];
-    return choices[Math.floor(Math.random()*choices.length)];
+    return choices[Math.floor(Math.random() * choices.length)];
 }
 
 // return values:
@@ -42,58 +208,6 @@ function playRound(playerSelection, computerSelection) {
                 return 0;
         }
     }
-
-    return -1;
-}
-
-function game() {
-    let runningGame = true;
-    let playerScore = 0;
-    let computerScore = 0;
-    let victoryMessage = "";
-    let playerSelection = "";
-    let computerSelection = "";
-    let roundResults;
-
-    while (runningGame){
-
-        playerSelection = prompt("Write your choice: rock, paper or scissors?");
-        computerSelection = getComputerChoice();
-
-        roundResults = playRound(playerSelection, computerSelection);
-
-        if(roundResults === -1){
-            alert("Did not understand your choice.\n\nScores\nPlayer: "+playerScore+"\n"+"Computer: "+computerScore);
-            continue;
-        }
-
-        if(roundResults === 1){
-            playerScore++;
-            alert("Round won, "+ playerSelection.toLowerCase()+ " beats "+ computerSelection+"\n\nScores\nPlayer: "+playerScore+"\n"+"Computer: "+computerScore);
-        }
-
-        else if(roundResults === 2){
-            computerScore++;
-            alert("Round lost, "+ computerSelection+ " beats "+ playerSelection.toLowerCase()+"\n\nScores\nPlayer: "+playerScore+"\n"+"Computer: "+computerScore);
-        }
-
-        else {
-            alert("Draw, let's keep going\n\nScores\nPlayer: "+playerScore+"\n"+"Computer: "+computerScore);
-        }
-
-
-        if(playerScore === 5 || computerScore === 5) {
-            runningGame = false;
-        }
-    }
-
-    if (playerScore === 5){
-        victoryMessage = "Player wins!"
-    }
-    else {
-        victoryMessage = "Computer wins!"
-    }
-    alert(victoryMessage);
 
     return -1;
 }
